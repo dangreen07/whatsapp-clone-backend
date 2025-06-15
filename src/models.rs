@@ -10,7 +10,6 @@ pub struct User {
     pub first_name: String,
     pub last_name: String,
     pub phone_number: String,
-    pub country_code: String,
     pub password_hash: String,
     pub refresh_token: Uuid,
     pub created_at: NaiveDateTime,
@@ -23,6 +22,5 @@ pub struct NewUser {
     pub first_name: String,
     pub last_name: String,
     pub phone_number: String,
-    pub country_code: String,
     pub password_hash: String
 }

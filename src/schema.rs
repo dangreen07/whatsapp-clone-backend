@@ -5,10 +5,7 @@ diesel::table! {
         id -> Uuid,
         first_name -> Varchar,
         last_name -> Varchar,
-        #[max_length = 10]
-        phone_number -> Bpchar,
-        #[max_length = 3]
-        country_code -> Bpchar,
+        phone_number -> Varchar,
         password_hash -> Varchar,
         refresh_token -> Uuid,
         created_at -> Timestamp,

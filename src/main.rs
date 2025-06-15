@@ -19,19 +19,17 @@ struct AppState {
     db: DbPool
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 struct SignUpRequest {
     first_name: String,
     last_name: String,
     phone_number: String,
-    country_code: String,
     password: String,
 }
 
 #[derive(Deserialize)]
 struct SignInRequest {
     phone_number: String,
-    country_code: String,
     password: String
 }
 
@@ -50,7 +48,6 @@ async fn sign_up(data: web::Json<SignUpRequest>, state: web::Data<AppState>) -> 
         first_name: data.first_name.clone(),
         last_name: data.last_name.clone(),
         phone_number: data.phone_number.clone(),
-        country_code: data.country_code.clone(),
         password_hash: password_hash
     };
 
@@ -80,7 +77,7 @@ async fn sign_in(data: web::Json<SignInRequest>, state: web::Data<AppState>) -> 
 
     let mut conn = state.db.get().unwrap();
 
-    let user = users.filter(phone_number.eq(data.phone_number.clone()).and(country_code.eq(data.country_code.clone())))
+    let user = users.filter(phone_number.eq(data.phone_number.clone()))
         .first::<User>(&mut *conn);
 
     let user = match user {
@@ -133,7 +130,7 @@ async fn main() -> std::io::Result<()> {
             .service(sign_in)
             .service(refresh_token)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }
